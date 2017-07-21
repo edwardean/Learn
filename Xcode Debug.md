@@ -1,14 +1,14 @@
 
 # Xcode Debug Toolset
----
 ## print
----
 * 简写成p, pri, ptin
 * po(print object)可以打印对象的description方法的结果
 * 打印不同格式可以用p/x number打印十六进制，p/t number打印二进制，p/c char打印字符。这里是完整清单https://sourceware.org/gdb/onlinedocs/gdb/Output-Formats.html
 * `po [0x1234 _ivarDescription]`
 * `po [0x1234 _shortMethodDescription]`
 * `po [0x1234 _methodDescription]`
+* `po [[UIWindow keyWindow] recursiveDescription]`打印window所有的视图层级
+* `po [[[UIWindow keyWindow] rootViewController] _printHierarchy]`打印controller的视图层级
 
 
 ##### 调试寄存器中的变量：
@@ -16,22 +16,19 @@
 
 |platform|recriver|SEL|Arg1|Arg2|return value|
 |---|---|---|---|---|---|
-|x86_64|rdi|rsi|rdx|rcx|rax|
-|i386|eax|ecx||
+|x86_64|rdi或者`$rbp+16`|rsi或者`$rbp+24`|rdx或者`$rbp+32`|rcx或者`$rbp+40`|rax|
 |arm64|x0|x1|x2|x3|
-|arm|r0|r1
+|arm|r0|r1|r2|r3|
 
 
 
 ## erpression
----
 * 简写成 e，执行代码
 * `e [((UIView *)0x06ae2) setBackgroundColor:[UIColor redColor]]`更改一个view的背景颜色
 * `e class_getInstanceMethod([MyViewController class], @selector(layoutSubviews))`查看Method
-* `e BOOL $a = YES`创建一个变量，变量名要已`$`作前缀
+* `e BOOL $a = YES`创建一个变量，变量名要以`$`作前缀
 
 ## Breakpoint
---- 
 ### 命令行添加断点
 * `br set -a 0x01234`
 * `br set -r "UIView"`
@@ -82,3 +79,9 @@ new value: 0x0000000000000000
 ## xcode 环境变量
 * `OBJC_PRINT_REPLACED_METHODS YES` 打印重名方法
 * `DYLD_PRINT_STATISTICS 1` 打印App启动时DYLD加载时长
+
+
+##参考
+* https://developer.apple.com/library/content/technotes/tn2239/_index.html
+* https://www.objc.io/issues/19-debugging/debugging-case-study/
+* https://pspdfkit.com/blog/2017/user-breakpoints-in-xcode/
