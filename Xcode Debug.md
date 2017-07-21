@@ -1,0 +1,84 @@
+
+#Xcode Debug Toolset
+---
+##print
+---
+* 简写成p, pri, ptin
+* po(print object)可以打印对象的description方法的结果
+* 打印不同格式可以用p/x number打印十六进制，p/t number打印二进制，p/c char打印字符。这里是完整清单https://sourceware.org/gdb/onlinedocs/gdb/Output-Formats.html
+* `po [0x1234 _ivarDescription]`
+* `po [0x1234 _shortMethodDescription]`
+* `po [0x1234 _methodDescription]`
+
+
+#####调试寄存器中的变量：
+* `register read` 打印寄存器中的值
+
+|platform|recriver|SEL|Arg1|Arg2|return value|
+|---|---|---|---|---|---|
+|x86_64|rdi|rsi|rdx|rcx|rax|
+|i386|eax|ecx||
+|arm64|x0|x1|x2|x3|
+|arm|r0|r1
+
+
+
+##erpression
+---
+* 简写成 e，执行代码
+* `e [((UIView *)0x06ae2) setBackgroundColor:[UIColor redColor]]`更改一个view的背景颜色
+* `e class_getInstanceMethod([MyViewController class], @selector(layoutSubviews))`查看Method
+* `e BOOL $a = YES`创建一个变量，变量名要已`$`作前缀
+
+##Breakpoint
+--- 
+###命令行添加断点
+* `br set -a 0x01234`
+* `br set -r "UIView"`
+
+###通用断点
+* All Exceptions 异常断点
+* `UIViewAlertForUnsatisfiableConstraints` :
+  在遇到Autolayout约束冲突时会触发该断点
+  
+* `UIApplicationMain`:
+
+  **Debugger Command:**`e @import UIKit`
+  
+  这样在控制台中可以直接打印view的frame:
+  `p [view bounds]`
+  
+	![](http://chuantu.biz/t5/143/1500545154x1730513932.png)
+
+###符号断点
+ ![](http://chuantu.biz/t5/143/1500545827x1730513932.png)
+
+### 将断点添加到User Breakpoints中，可以跨工程共享
+
+ ![s](https://pspdfkit.com/images/blog/2017/user-breakpoints-in-xcode/move-to-user@2x-d63238f8.png)
+ 
+##watchpoint
+  监视内存地址发生读写
+
+* `watchpoint s e read 0x7f8c519b4600`
+
+* `watchpoint s e read_write 0x7f8c519b4600`
+
+监视vMain变量什么时候被重写了，监视这个地址什么时候被写入
+
+```
+(lldb) p (ptrdiff_t)ivar_getOffset((struct Ivar *)class_getInstanceVariable([MyView class], "vMain"))
+(ptrdiff_t) $0 = 8
+(lldb) watchpoint set expression -- (int *)$myView + 8
+Watchpoint created: Watchpoint 3: addr = 0x7fa554231340 size = 8 state = enabled type = w
+new value: 0x0000000000000000
+```
+##image lookup
+* `image lookup -s UIView` 打印UIView所在的映像文件
+* `image lookup -n setCenterPlaceholder`打印某个方法所在的映像文件
+* 更多用法参考 `help image lookup`
+
+
+##xcode 环境变量
+* `OBJC_PRINT_REPLACED_METHODS YES` 打印重名方法
+* `DYLD_PRINT_STATISTICS 1` 打印App启动时DYLD加载时长
