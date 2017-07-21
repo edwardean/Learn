@@ -1,7 +1,7 @@
 
-#Xcode Debug Toolset
+# Xcode Debug Toolset
 ---
-##print
+## print
 ---
 * 简写成p, pri, ptin
 * po(print object)可以打印对象的description方法的结果
@@ -11,7 +11,7 @@
 * `po [0x1234 _methodDescription]`
 
 
-#####调试寄存器中的变量：
+##### 调试寄存器中的变量：
 * `register read` 打印寄存器中的值
 
 |platform|recriver|SEL|Arg1|Arg2|return value|
@@ -23,20 +23,20 @@
 
 
 
-##erpression
+## erpression
 ---
 * 简写成 e，执行代码
 * `e [((UIView *)0x06ae2) setBackgroundColor:[UIColor redColor]]`更改一个view的背景颜色
 * `e class_getInstanceMethod([MyViewController class], @selector(layoutSubviews))`查看Method
 * `e BOOL $a = YES`创建一个变量，变量名要已`$`作前缀
 
-##Breakpoint
+## Breakpoint
 --- 
-###命令行添加断点
+### 命令行添加断点
 * `br set -a 0x01234`
 * `br set -r "UIView"`
 
-###通用断点
+### 通用断点
 * All Exceptions 异常断点
 * `UIViewAlertForUnsatisfiableConstraints` :
   在遇到Autolayout约束冲突时会触发该断点
@@ -50,14 +50,14 @@
   
 	![](http://chuantu.biz/t5/143/1500545154x1730513932.png)
 
-###符号断点
+### 符号断点
  ![](http://chuantu.biz/t5/143/1500545827x1730513932.png)
 
 ### 将断点添加到User Breakpoints中，可以跨工程共享
 
  ![s](https://pspdfkit.com/images/blog/2017/user-breakpoints-in-xcode/move-to-user@2x-d63238f8.png)
  
-##watchpoint
+## watchpoint
   监视内存地址发生读写
 
 * `watchpoint s e read 0x7f8c519b4600`
@@ -73,12 +73,12 @@
 Watchpoint created: Watchpoint 3: addr = 0x7fa554231340 size = 8 state = enabled type = w
 new value: 0x0000000000000000
 ```
-##image lookup
+## image lookup
 * `image lookup -s UIView` 打印UIView所在的映像文件
 * `image lookup -n setCenterPlaceholder`打印某个方法所在的映像文件
 * 更多用法参考 `help image lookup`
 
 
-##xcode 环境变量
+## xcode 环境变量
 * `OBJC_PRINT_REPLACED_METHODS YES` 打印重名方法
 * `DYLD_PRINT_STATISTICS 1` 打印App启动时DYLD加载时长
