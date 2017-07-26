@@ -4,15 +4,18 @@
 * 简写成p, pri, ptin
 * po(print object)可以打印对象的description方法的结果
 * 打印不同格式可以用p/x number打印十六进制，p/t number打印二进制，p/c char打印字符。这里是完整清单https://sourceware.org/gdb/onlinedocs/gdb/Output-Formats.html
-* `po [0x1234 _ivarDescription]`
-* `po [0x1234 _shortMethodDescription]`
-* `po [0x1234 _methodDescription]`
-* `po [[UIWindow keyWindow] recursiveDescription]`打印window所有的视图层级
-* `po [[[UIWindow keyWindow] rootViewController] _printHierarchy]`打印controller的视图层级
+* `(lldb) po [0x1234 _ivarDescription]`
+* `(lldb) po [0x1234 _shortMethodDescription]`
+* `(lldb) po [0x1234 _methodDescription]`
+* `(lldb) po [[UIWindow keyWindow] recursiveDescription]`打印window所有的视图层级
+* `(lldb) po [[[UIWindow keyWindow] rootViewController] _printHierarchy]`打印controller的视图层级
 
 
 ##### 调试寄存器中的变量：
-* `register read` 打印寄存器中的值
+* `(lldb) register read` 打印寄存器中的值
+* `(lldb) register read $arg1 $arg2` 打印参数
+* `(lldb) reg read rax` 读取rax寄存器（返回值）的内容
+* `(lldb) disassemble --frame` 将汇编代码反汇编成伪代码
 
 |platform|recriver|SEL|Arg1|Arg2|return value|
 |---|---|---|---|---|---|
@@ -24,14 +27,14 @@
 
 ## erpression
 * 简写成 e，执行代码
-* `e [((UIView *)0x06ae2) setBackgroundColor:[UIColor redColor]]`更改一个view的背景颜色
-* `e class_getInstanceMethod([MyViewController class], @selector(layoutSubviews))`查看Method
-* `e BOOL $a = YES`创建一个变量，变量名要以`$`作前缀
+* `(lldb) e [((UIView *)0x06ae2) setBackgroundColor:[UIColor redColor]]`更改一个view的背景颜色
+* `(lldb) e class_getInstanceMethod([MyViewController class], @selector(layoutSubviews))`查看Method
+* `(lldb) e BOOL $a = YES`创建一个变量，变量名要以`$`作前缀
 
 ## Breakpoint
 ### 命令行添加断点
-* `br set -a 0x01234`
-* `br set -r "UIView"`
+* `(lldb) br set -a 0x01234`
+* `(lldb) br set -r "UIView"`
 
 ### 通用断点
 * All Exceptions 异常断点
@@ -57,9 +60,9 @@
 ## watchpoint
   监视内存地址发生读写
 
-* `watchpoint s e read 0x7f8c519b4600`
+* `(lldb) watchpoint s e read 0x7f8c519b4600`
 
-* `watchpoint s e read_write 0x7f8c519b4600`
+* `(lldb) watchpoint s e read_write 0x7f8c519b4600`
 
 监视vMain变量什么时候被重写了，监视这个地址什么时候被写入
 
@@ -71,8 +74,9 @@ Watchpoint created: Watchpoint 3: addr = 0x7fa554231340 size = 8 state = enabled
 new value: 0x0000000000000000
 ```
 ## image lookup
-* `image lookup -s UIView` 打印UIView所在的映像文件
-* `image lookup -n setCenterPlaceholder`打印某个方法所在的映像文件
+* `(lldb) image lookup -s UIView` 打印UIView所在的映像文件
+* `(lldb) image lookup -n setCenterPlaceholder`打印某个方法所在的映像文件
+* `(lldb) image list UIKit`
 * 更多用法参考 `help image lookup`
 
 
