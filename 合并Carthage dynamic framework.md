@@ -16,15 +16,15 @@ Carthage项目中也有关于如何[合并dynamic framework的文章](https://gi
 ### Carthage目录概览
 
 首先Carthage集成之后的目录大概是这样：
-![carthage_dir.png](./images/carthage_dir.png)
+![carthage_dir.png](https://ooo.0o0.ooo/2017/08/17/599532e1ea9a8.png)
 在Build/iOS/目录下存放的是编译好的framework和dSYM文件：
-![carthage_build_dir.png](./images/carthage_build_dir.png)
+![carthage_build_dir.png](https://ooo.0o0.ooo/2017/08/17/5995332696dc4.png)
 让我们看一看这些framework的架构是什么样的:
-![framework_arch.png](./images/framework_arch.png)
+![framework_arch.png](https://ooo.0o0.ooo/2017/08/17/59953347c20a9.png)
 可以看到，这些framework都是dynamic类型的。
 
 看到这里不知道你会不会有疑问，这些universal的framework在编译时难道要将不需要的架构也一起link到我们的App中吗？其实不是的，在我们工程的build Phases中会添加一段Script:
-![carthage_copy.png](./images/carthage_copy.png)
+![carthage_copy.png](https://ooo.0o0.ooo/2017/08/17/5995337aa1709.png)
 这段copy-framework命令其中做的一件事就是在编译后期copy framework到我们的App时会剔除当前不需要的架构，比如当前运行的iPhone 4s模拟器，那么只会保留i386架构，iPhone 4s真机只会保留armv7架构等等。
 
 ***
@@ -49,7 +49,7 @@ carthage bootstrap "$@"
 ```
 
 另外还需要一个[ld.py](https://github.com/keith/swift-staticlibs/blob/master/ld.py)脚本，别忘了用`chmod +x`将ld.py变为可执行文件。最后将这两个脚本文件放到Carthage目录下:
-![ld_py.png](./images/ld_py.png)
+![ld_py.png](https://ooo.0o0.ooo/2017/08/17/5995339f8700a.png)
 
 ***
 ### 生成static framework
@@ -59,22 +59,22 @@ carthage bootstrap "$@"
 ./carthage-build-static.sh FLEX --platform ios
 ```
 再次查看重新生成的framework:
-![static_framework_arch.png](./images/static_framework_arch.png)
+![static_framework_arch.png](https://ooo.0o0.ooo/2017/08/17/599533cc8bbcd.png)
 如果输出中包含`current ar archive`说明已经成功生成了静态framework。
 
 *** 
 ### 将多个static framework合并成一个dynamic framework
 * 新建一个新的空白工程，target选Framework，ProductName比如叫`FatDynamic`：
- ![project.png](./images/project.png)
+ ![project.png](https://ooo.0o0.ooo/2017/08/17/599533f919e01.png)
  
 * 将刚才生成的那些static framework添加到工程中(切记添加的是framework中的二进制文件，不是framework本身)：
-![link.png](./images/link.png) 
+![link.png](https://ooo.0o0.ooo/2017/08/17/599534162dc60.png) 
 * 添加Framework中的Header Files到工程中，记得Private Header别忘了添加：
-![headers.png](./images/headers.png)
+![headers.png](https://ooo.0o0.ooo/2017/08/17/5995342fcf9f2.png)
 
 #### 工程准备就绪，开始编译生成新的framework
 我们每次选择不同的模拟器或真机只能编译生成一种架构，比如模拟器4s生成i384，5s生成x84_64,真机4s生成armv7,5s生成arm64。所以我们至少要生成这四种不同架构，然后再把这四种架构再合并起来。
-![不同架构.png](./images/不同架构.png)
+![不同架构.png](https://ooo.0o0.ooo/2017/08/17/5995344b101e4.png)
 
 * 合并不同架构
 
@@ -82,7 +82,7 @@ carthage bootstrap "$@"
 lipo -create FatDynamic_* -output FatDynamic
 ```
 合并后再看一下：
-![合并后.png](./images/合并后.png)
+![合并后.png](https://ooo.0o0.ooo/2017/08/17/599534a0428e9.png)
 
 至此我们已经将四种不架构合并到一个二进制文件中，最后将FatDynamic再替换到framework中就好了。
 
@@ -91,7 +91,7 @@ lipo -create FatDynamic_* -output FatDynamic
 
 	还记得我们在工程中添加的那个carthage copy-framework的Script吗，合并后的FatDynamic.framework添加到工程中后将copy-framework那里的输入改成FatDynamic.framework就好了。
 比如我把FatDynamic.framework放到了Carthage/Build/iOS/目录下，那么copy-framework那里就改成这样：
-![copy_fat_framework.png](./images/copy_fat_framework.png)
+![copy_fat_framework.png](https://ooo.0o0.ooo/2017/08/17/599534b8be866.png)
 
 * 更改工程中framework头文件
   刚才那一步操作后编译工程会出一堆头文件引入错误，原因是原来比如叫<FLEX/FLEX.h>的头文件现在必须全部要改成<FatDynamic/FLEX.h>了。
@@ -127,7 +127,7 @@ lipo -create FatDynamic_* -output FatDynamic
 
 ### LaunchTime
  * 先配置环境变量
- ![dyld_time_config.png](./images/dyld_time_config.png)
+ ![dyld_time_config.png](https://ooo.0o0.ooo/2017/08/17/599534d3e3ca9.png)
 
  * 记录log时间输出并统计（用iPhone 6Plus真机热启动测量）
  
@@ -198,17 +198,33 @@ lipo -create FatDynamic_* -output FatDynamic
          dylib loading time: 194.99 milliseconds (57.0%)
  ```
  
- 统计结果
+ * 统计结果 (单位ms)
  
  ||dylib loading time|
 |:------|:------|
-|A|61.139ms|
-|B|899.369ms|
+|A|61.139|
+|B|899.369|
 |C|256.787|
 
-## 编译时间测量
-按上面A B C三种情况分类（单位：秒）
+* Total pre-main time (单位ms)
 
+ ||A|B|C|
+|:------|:------|:------|:------|
+|1|244.00|1200|359.36|
+|2|325.43|1300|385.02|
+|3|242.41|1100|366.95|
+|4|166.98|1200|365.37|
+|5|221.46|1000|402.15|
+|6|379.17|1000|499.69|
+|7|582.32|1300|347.24|
+|8|176.29|1100|328.59|
+|9|227.55|979.21|420.61|
+|10|161.24|1000|414.59|
+|平均值|272.658|1117.921|388.957|
+
+## 编译时间测量
+ 按上面A B C三种情况分类（单位：秒）
+ 
 ||A|B|C|
 |:------|:------|:------|:------|
 |1|268.849|287.625|259.176|
