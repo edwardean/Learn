@@ -1,7 +1,7 @@
 ## 合并Carthage dynamic framework
 >虽然本文中的dynamic framework是用Carthage集成的，但通样适用于任何static或者dynamic的framework。
 >
->本文不会讲dynamic framework对App launchTime造成的影响以及测量方法，这里有几篇文章可以为你提供参考:
+>这里有几篇文章对App launchTime造成的影响以及测量方法，可以为你提供参考:
 >
 > * https://useyourloaf.com/blog/slow-app-startup-times/
 > * https://blog.automatic.com/how-we-cut-our-ios-apps-launch-time-in-half-with-this-one-cool-trick-7aca2011e2ea
@@ -71,6 +71,9 @@ carthage bootstrap "$@"
 ![link.png](https://ooo.0o0.ooo/2017/08/17/599534162dc60.png) 
 * 添加Framework中的Header Files到工程中，记得Private Header别忘了添加：
 ![headers.png](https://ooo.0o0.ooo/2017/08/17/5995342fcf9f2.png)
+
+* 在`OTHER_LDFLAGS`中添加`-all_load` 
+![](https://ooo.0o0.ooo/2017/08/18/599679db5a88e.png)
 
 #### 工程准备就绪，开始编译生成新的framework
 我们每次选择不同的模拟器或真机只能编译生成一种架构，比如模拟器4s生成i384，5s生成x84_64,真机4s生成armv7,5s生成arm64。所以我们至少要生成这四种不同架构，然后再把这四种架构再合并起来。
