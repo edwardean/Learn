@@ -1,9 +1,7 @@
 ## [Ccahe](https://ccache.samba.org/)
 
 
-* ccache安装
-
-	`brew install ccache`
+* ccache安装 `brew install ccache`
 
 
 * 编辑`ccache-clang`脚本：
@@ -36,8 +34,8 @@ $(SRCROOT)/ccache/ccache-clang
 
 * ccache由于不支持module，所以要在Podfile中关闭Pod工程的Enable Modules：
 	
-	```
-	post_install do |installer|
+```
+post_install do |installer|
     installer.pods_project.targets.each do |target|
         target.build_configurations.each do |config|
             #关闭 Enable Modules
@@ -49,11 +47,11 @@ $(SRCROOT)/ccache/ccache-clang
 end
 ```
 
+
 * 在Podfile中进行配置，将头文件里的`@import`全都改写成`#import`:
 
-
-	```
-	pre_install do |installer| 
+```
+pre_install do |installer| 
 require 'fileutils'
 def iterate_souce_and_modify_at_import(glob_str)
 regexp = /@import\s+(\w+);/
