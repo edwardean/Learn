@@ -1,4 +1,4 @@
-##[Ccahe](https://ccache.samba.org/)
+## [Ccahe](https://ccache.samba.org/)
 
 
 * ccache安装
@@ -8,7 +8,8 @@
 
 * 编辑`ccache-clang`脚本：
 
-	```
+	
+```
  #!/bin/sh
  if type -p ccache >/dev/null 2>&1; then
   export CCACHE_MAXSIZE=3G
@@ -25,16 +26,18 @@ fi
 ```
 
 * 在工程User-Defined中添加CC变量,我是将ccache-clang脚本放在了项目目录下的ccache子目录下
+
 ```
 $(SRCROOT)/ccache/ccache-clang
 ```
+
 ![](https://ooo.0o0.ooo/2017/08/18/599688cca441f.png)
 
 
 * ccache由于不支持module，所以要在Podfile中关闭Pod工程的Enable Modules：
 	
 	```
-post_install do |installer|
+	post_install do |installer|
     installer.pods_project.targets.each do |target|
         target.build_configurations.each do |config|
             #关闭 Enable Modules
@@ -48,8 +51,9 @@ end
 
 * 在Podfile中进行配置，将头文件里的`@import`全都改写成`#import`:
 
+
 	```
-pre_install do |installer| 
+	pre_install do |installer| 
 require 'fileutils'
 def iterate_souce_and_modify_at_import(glob_str)
 regexp = /@import\s+(\w+);/
@@ -70,12 +74,14 @@ iterate_souce_and_modify_at_import('./Pods/**/*.m')
 end
 ```
 
-ccache编译时长：
+测量ccache编译时长：
 打开Xcode编译时间
 
 ```
 > defaults write com.apple.dt.Xcode ShowBuildOperationDuration YES
 ```
+
+![](https://ooo.0o0.ooo/2017/08/18/59968a7b430c4.png)
 
 用`ccache -s`查看缓存命中情况
 
@@ -100,4 +106,5 @@ files in cache                    124710
 cache size                           2.5 GB
 max cache size                       5.0 GB
 ```
+
 在我自己的开发Mac上当缓存命中率打到70%时工程编译时间由原来的260s左右减少至现在的20s左右，可以说提升还是很大的。
