@@ -225,7 +225,7 @@ lipo -create FatDynamic_* -output FatDynamic
 |10|161.24|1000|414.59|
 |平均值|272.658|1117.921|388.957|
 
-## 编译时间测量
+## 编译时间测量（Release）
  按上面A B C三种情况分类（单位：秒）
  
 ||A|B|C|
