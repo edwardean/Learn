@@ -26,7 +26,7 @@
 
 连续几次进入该页面。发现`DEFMerchantTagGroupModel`和`DEFMerchantTagModel`两个类的个数只增不减，查看它们产生的Stack Trace时都指向了一处viewModel中的代码：
 
-![](https://i.loli.net/2017/11/15/5a0c3479e57d9.png)
+![](https://i.loli.net/2017/11/15/5a0c359448a4e.png)
 
 viewModel中的逻辑是这样的：
 
