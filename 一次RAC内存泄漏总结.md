@@ -8,9 +8,12 @@
 
 还接着说用Allocations查找循环引用问题，打开Instruments中的Allocations模板，在其中过滤想要关注的内存对象名称，在页面之间切换的同时观察对象的Persistent只是不是只增不减，这样来判定该对象是否产生了循环引用。
 
-1. 选择Allocations模板
+1、选择Allocations模板
+
 ![](https://i.loli.net/2017/11/15/5a0c34178ebf0.png)
-2. 添加要过滤的关键字
+
+2、添加要过滤的关键字
+
 ![](https://i.loli.net/2017/11/15/5a0c343672a96.png)
 
 在大概上个版本上线以前，我在用Allocations追踪内存循环引用时发现有一个在UICollectionViewCell上使用的model类在内存中占有的个数只增不减，在反复查看业务代码后并没有发现有循环引用的痕迹。更奇怪的是使用该model类的Controller和Cell在页面退出时内存占用都能正常的回收，下面是追踪该model类时的记录：
