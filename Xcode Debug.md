@@ -64,6 +64,8 @@
 
 * `(lldb) watchpoint s e read_write 0x7f8c519b4600`
 
+* `(lldb) watchpoint set e -- 0x7f8b6ccd11b0` 
+
 监视vMain变量什么时候被重写了，监视这个地址什么时候被写入
 
 ```
