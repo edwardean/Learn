@@ -2,7 +2,7 @@
 
 现象：
 
-由于Moma iOS项目中集成了carthage，根据carthage配置，需要在项目的Build Phase中添加copy-framework命令将framework拷贝到ipa中
+由于我们的iOS项目中集成了carthage，根据carthage配置，需要在项目的Build Phase中添加copy-framework命令将framework拷贝到ipa中
 
 ![屏幕快照 2017-10-20 下午6.25.08.png](http://upload-images.jianshu.io/upload_images/10432-2c87ca514e101c5c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
