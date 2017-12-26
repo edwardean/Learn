@@ -159,5 +159,40 @@ dispatch_async(dispatch_get_main_queue(), ^{
   NSLog(@"callMe");
 }
 ```
+* 下面代码段中三次输出都是什么内容？
+
+``` objc
+@interface ViewController: UIViewController
+@property (nonatomic, strong) NSString *strongString;
+@property (nonatomic, assign) NSString *assignString;
+@end
+
+@implementation ViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+
+    //Quiz 1
+    self.strongString = [NSString stringWithFormat:@"string"];
+    self.assignString = self.strongString;
+    self.strongString = nil;
+    NSLog(@"assignString = %@", self.assignString);
+    
+    //Quiz 2
+    self.strongString = @"string1234";
+    self.assignString = self.strongString;
+    self.strongString = nil;
+    NSLog(@"assignString = %@", self.assignString);
+    
+    //Quiz 3
+    self.strongString = [[NSString alloc] initWithUTF8String:"string1234"];
+    self.assignString = self.strongString;
+    self.strongString = nil;
+    NSLog(@"assignString = %@", self.assignString);
+}
+
+@end
+```
+
 * 讨论一下平时App常见的优化怎么做。
 
