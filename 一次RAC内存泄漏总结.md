@@ -60,6 +60,7 @@ viewModel中的逻辑是这样的：
 果然发现RAC中的对象也有只增不减的情况，
 
 ![](https://i.loli.net/2017/11/15/5a0c348b0d8ea.png)
+
 发现`RACSubscriber`每次进入该页面返回后在Persistent中的数量也是一直增加，这是我才恍然想起来viewModel中的代码到底哪里出了问题，
 因为`RACSubscriber`跟`subscriberWithNext:`后面的block是一种强持有关系，只有手动对`RACSubscriber`发`[subscriber sendCompleted]`消息时才会解除这对引用关系，正因为上面代码中缺少了`[subscriber sendCompleted]`的调用，才导致`RACSubscriber`和`subscriberWithNext:`的block连同block中生成的model对象一直都倔强的留在了内存中。
 
