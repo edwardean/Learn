@@ -2,11 +2,11 @@
 
 现象：
 
-由于我们的iOS项目中集成了carthage，根据carthage配置，需要在项目的Build Phase中添加copy-framework命令将framework拷贝到ipa中
+由于我们的iOS项目中集成了Carthage，根据Carthage配置，需要在项目的Build Phase中添加`copy-frameworks`命令将framework拷贝到ipa中
 
 ![屏幕快照 2017-10-20 下午6.25.08.png](http://upload-images.jianshu.io/upload_images/10432-2c87ca514e101c5c.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-这个copy-framework命令由于未知原因在编译项目时会出现很大几率卡在这个命令上，具体原因还未调查。
+这个`copy-frameworks`命令由于未知原因在编译项目时会出现很大几率卡在这个命令上，拖慢编译时间，由于没有研究`copy-frameworks`源码所以该问题出现的原因具体未深入调查。
 
 后来了解了这个命令做的事情，大概可分成这几步：
 
@@ -14,7 +14,7 @@
 2. 重新签名剔除不需要架构的framework
 3. 将framework拷贝到编译product目录中
 
-所以根据上述步骤，自己可以写一份python代码来完成上述几个步骤，代码如下：
+所以根据上述步骤，可以本地写一份python代码来完成上述几个步骤，代码如下：
 
 ``` python
 
@@ -89,4 +89,4 @@ if __name__ == "__main__":
 
 ![屏幕快照 2017-10-20 下午6.35.07.png](http://upload-images.jianshu.io/upload_images/10432-75a81e14f795f2e9.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-经过这样一番改进后，carthage命令烦人的卡死现象再也没有了 :)
+经过这样一番改进后，Carthage命令烦人的卡死现象再也没有了 :)
