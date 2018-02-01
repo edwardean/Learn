@@ -7,7 +7,7 @@
 
 ``` swift
     private lazy var tableView: UITableView = {
-        let tableView = UITableView(frame: .zero, style: .plain)
+        let tableView = UITableView(frame: view.bounds, style: .plain)
         tableView.delegate = self
         tableView.dataSource = self
         return tableView
@@ -24,27 +24,9 @@
 let controller = TestController()
 controller = nil 
 ```
-是因为如果执行`deinit`时tableView是nil的话，`deinit`中的代码实际上相当于懒加载调用`tableView`的初始化方法，在初始化方法中设置了`delegate`和`dataSource`，之就相当于OC中在`dealloc`中访问`weak`的`self`一样会crash。
-
-#### 在deinit中访问lazy成员
-还是上面的代码，稍稍修改一下
-
-``` swift
-    private lazy var tableView = UITableView(frame: .zero, style: .plain).then {
-        $0.rowHeight = 90
-        $0.tableFooterView = UIView()
-        $0.estimatedRowHeight = 0
-    }
-
-    deinit {
-        tableView.delegate = nil
-        tableView.dataSource = nil
-    }
-```
-
-> `then`语法使用见[这里](https://github.com/devxoul/Then)
-
-这段代码按上面说的情形来用还是会crash，但crash原因跟上面不一样，你能猜到吗
+* 原因1： 是因为如果执行`deinit`时tableView是nil的话，`deinit`中的代码实际上相当于懒加载调用`tableView`的初始化方法，在初始化方法中设置了`delegate`和`dataSource`，之就相当于OC中在`dealloc`中访问`weak`的`self`一样会crash。
+* 原因2：如果这时controller的view还没构造出来的话view属性这时还是nil，上面的
+`let tableView = UITableView(frame: view.bounds, style: .plain)`这一行中访问了`view.bounds`，这就相当于对view属性做强制解包。可想而知对nil强制解包的后果，自然是crash。
 
 #### OC中调用Swift方法
 
