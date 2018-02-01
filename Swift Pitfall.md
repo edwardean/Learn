@@ -45,6 +45,14 @@ NSString *formattedLocation = [LocationManager formatLocation:nil];
 ```
 这样调用会crash。
 如果Swift中暴露给OC的方法的参数是非Optional的话，在OC中调用这个方法传nil的话编译器是没办法给你做类型检查的话，如果你恰好这么做了，那么等待你的只有crash。
+所以这种情况下我推荐的一种安全做法就是:
+> 如果不确定OC中调用该方法时参数会不会传空，定义方法参数时就定义成`Optional`类型，然后再方法体中利用``来对参数作空值判断。
+``` Swift
+    @objc func formatLocation(_ location: CLLocation?) -> String {
+       guard let location = location else { return "" } 
+       return "\(location.coordinate.latitude * 1e6)" + "," + "\(location.coordinate.longitude * 1e6)"
+    }
+```
 
 #### Swift 4 NSKeyValueObservation
 
