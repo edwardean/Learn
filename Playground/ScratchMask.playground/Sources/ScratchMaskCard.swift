@@ -118,4 +118,3 @@ extension ScratchMask {
         delegate?.scratchCancled?(point: lastPoint!)
     }
 }
-
