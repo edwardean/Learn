@@ -44,7 +44,7 @@ https://stackoverflow.com/questions/26844432/how-to-find-out-what-causes-a-didhi
 
 * 复现步骤
 
-![ImagePicker iOS9 crash.gif](https://wx4.sinaimg.cn/mw1024/a1e206c1gy1fqno8mra2fg20a00dc7wn.gif)
+![ImagePicker_iOS9_crash.gif](https://wx4.sinaimg.cn/mw1024/a1e206c1gy1fqno8mra2fg20a00dc7wn.gif)
 
 在拍照页面中双指捏合后会出现`CMKZoomSlider`，这个view出现后会在5s后自动消失。如果在它消失前的一刹那点击“取消”将拍照页面dismiss掉的话就会出现crash。
 
