@@ -61,9 +61,9 @@ Thread 0 Crashed:
 
 * 解决方法：
 
-	按照上面的分析如果我们去hook`-[UIWebSelectSinglePicker pickerView:didSelectRow:inComponent:]`方法似乎不太靠谱，这个方法太长，我们继续往上找在哪里调用了该方法：
+按照上面的分析如果我们去hook`-[UIWebSelectSinglePicker pickerView:didSelectRow:inComponent:]`方法似乎不太靠谱，这个方法太长，我们继续往上找在哪里调用了该方法：
 
-	```
+```
 void -[UIPickerView _sendSelectionChangedForComponent:notify:](void * self, void * _cmd, long long arg2, bool arg3) {
     rcx = arg3;
     r14 = arg2;
@@ -86,8 +86,9 @@ void -[UIPickerView _sendSelectionChangedForComponent:notify:](void * self, void
 
 * Code
 
-	代码很简单，直接贴在这里。
+代码很简单，直接贴在这里。
 	
+
 ```
 #import <objc/runtime.h>
 
