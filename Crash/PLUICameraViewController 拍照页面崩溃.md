@@ -1,5 +1,11 @@
 ## PLUICameraViewController 拍照页面崩溃
 
+* 复现步骤
+
+![未命名.gif](https://i.loli.net/2018/04/24/5adec27661e0e.gif)
+
+在拍照页面中双指捏合后会出现`CMKZoomSlider`，这个view出现后会在5s后自动消失。如果在它消失前的一刹那点击“取消”将拍照页面dismiss掉的话就会出现crash。
+
 * 系统： iOS 9全系统
 
 * 崩溃信息
@@ -41,12 +47,6 @@ Thread 0 Crashed:
 
 最后是在系统的拍照页面`PLUICameraViewController`消失之后崩溃的，借着这个线索在SO上找到了复现步骤：
 https://stackoverflow.com/questions/26844432/how-to-find-out-what-causes-a-didhidezoomslider-error-on-ios-8/29959695
-
-* 复现步骤
-![未命名.gif](https://i.loli.net/2018/04/24/5adec27661e0e.gif)
-
-
-在拍照页面中双指捏合后会出现`CMKZoomSlider`，这个view出现后会在5s后自动消失。如果在它消失前的一刹那点击“取消”将拍照页面dismiss掉的话就会出现crash。
 
 ![IMG_0583.PNG](https://i.loli.net/2018/04/24/5adebafa0ae9c.png)
 
