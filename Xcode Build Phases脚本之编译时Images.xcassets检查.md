@@ -12,7 +12,7 @@ If you include an absolute file path and a line number (if the error occurred in
 
 今天我要说的是用这个方法在Xcode编译时能够动态检查Images.xcassets里的图片是否有未被使用或者在源码中引用了不在Images.xcassets中的图片这两种错误情况。这样就可以在编译器帮我们检查出来图片相关的一些错误。
 
-话不多少，直接上检查代码:
+话不多说，直接上检查代码:
 
 `AssetChecker.swift:`
 
