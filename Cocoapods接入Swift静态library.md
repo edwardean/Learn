@@ -1,6 +1,6 @@
 ## Cocoapods接入Swift静态library
 
-Cocoapods从1.5.3版本开始起引入Swift静态库不再需要在Podfile中添加`use_frameworks!`了。源码引入Swift库代码后生成的Target将会是.a的形式。
+> Cocoapods从1.5.3版本开始起引入Swift静态库不再需要在Podfile中添加`use_frameworks!`了。源码引入Swift库代码后生成的Target将会是.a的形式。
 
 ![1542851770887-image.png](https://i.loli.net/2018/11/22/5bf61ee3b1547.png) 
 
@@ -9,7 +9,7 @@ Cocoapods从1.5.3版本开始起引入Swift静态库不再需要在Podfile中添
 
 下面说一下具体的接入方式。
 
-###1.将Pod版本改为1.5.3或更高版本
+### 1.将Pod版本改为1.5.3或更高版本
 如果是在Gemfile中指定的pod版本，可以这样修改：
 
 ```
@@ -37,23 +37,23 @@ installer.pods_project.build_configurations.each do |config|
 end
 ```
 
-###2.在Podfile中添加我们需要引入的Swift Pod
+### 2.在Podfile中添加我们需要引入的Swift Pod
 
 ```
 pod 'DEFImageUploader', '0.1.0'
 ```
 
-###3.Pod install后在项目中使用Swift库
+### 3.Pod install后在项目中使用Swift库
 
-#####3.1 在Swift中使用
+##### 3.1 在Swift中使用
 
 * `import DEFImageUploader`
 
-#####3.2 在OC中使用
+##### 3.2 在OC中使用
 * `@import DEFImageUploader;`
 
 
-###在OC中引入Swift Pod库可能遇到的问题
+### 在OC中引入Swift Pod库可能遇到的问题
 在上面3.2中提到的是以Module的方式import需要使用的Swift库的。这个前提是Xcode工程的`Enable Module`必须是打开的。
 
 ##### 挑战1
