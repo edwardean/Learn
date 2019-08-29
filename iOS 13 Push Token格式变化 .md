@@ -32,9 +32,47 @@ PushKit Token:
 | 方案二 | ![carbon3.png](https://upload-images.jianshu.io/upload_images/10432-f98dba00023a11e8.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240) | `解析方案二：PKPush token: 1cd7193e807b5e8091c78793a87acf77d870bbc420479328a683fbcae5fdde81` |  `解析方案二：PKPush token: 02f569524c28b34190cd5919956d774218560e54aaf16af87f3d0233ea7c4f3b`
 
 
+* 线上解析方案代码:
+
+```
+NSString *token = [NSString stringWithFormat:@"%@", pushCredentials.token];
+KDBLog(@"Origin PKPush token: %@", token);
+    
+token = [token stringByReplacingOccurrencesOfString:@" " withString:@""];
+token = [token stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
+token = [token stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+NSLog(@"线上解析方案： PKPush token: %@", token);
+```
+
+* 方案一代码：
+
+```
+NSData *tokenData = pushCredentials.token;
+if (tokenData.length >= 8) {
+    const unsigned *tokenBytes = (const unsigned *)[tokenData bytes];
+    token = [NSString stringWithFormat:@"%08x%08x%08x%08x%08x%08x%08x%08x",
+             ntohl(tokenBytes[0]), ntohl(tokenBytes[1]), ntohl(tokenBytes[2]),
+             ntohl(tokenBytes[3]), ntohl(tokenBytes[4]), ntohl(tokenBytes[5]),
+             ntohl(tokenBytes[6]), ntohl(tokenBytes[7])];
+    NSLog(@"解析方案一：PKPush token: %@", token);
+}
+```
+
+* 方案一代码：
+
+```
+NSMutableString *deviceTokenString = [NSMutableString string];
+const char *bytes = pushCredentials.token.bytes;
+NSInteger count = pushCredentials.token.length;
+for (int i = 0; i < count; i++) {
+    [deviceTokenString appendFormat:@"%02x", bytes[i]&0x000000FF];
+}
+NSLog(@"解析方案二：PKPush token: %@", deviceTokenString);
+```
+
 ## 结论：iOS 13系统上除了线上老的解析方案外，方案一和方案二均能正常解析token。并且方案一和方案二还能兼容iOS13以前的系统Token格式。
 
 > 参考：
 > [https://forums.developer.apple.com/thread/117545](https://forums.developer.apple.com/thread/117545 "https://forums.developer.apple.com/thread/117545")
-<br>
+
 >  [https://info.umeng.com/detail?id=174&&cateId=1](https://info.umeng.com/detail?id=174&&cateId=1 "https://info.umeng.com/detail?id=174&&cateId=1")
