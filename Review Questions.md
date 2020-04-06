@@ -196,3 +196,42 @@ dispatch_async(dispatch_get_main_queue(), ^{
 
 * 讨论一下平时App常见的优化怎么做。
 
+* 大数加法
+
+```
++ (NSString *)largrNumberSum:(NSString *)n1 anotherNumber:(NSString *)n2 {
+    NSInteger n1Length = n1.length;
+    NSInteger n2Length = n2.length;
+    NSInteger maxLength = MAX(n1Length, n2Length);
+    
+    // 对其位数，不够前面补0
+    if (maxLength == n1Length) {
+        // n2Length < n1Length
+        for (NSInteger i = 0; i < n1Length - n2Length; i++) {
+            n2 = [@"0" stringByAppendingString:n2];
+        }
+    } else {
+        // n1Length < n2Length
+        for (NSInteger i = 0; i < n2Length - n1Length; i++) {
+            n1 = [@"0" stringByAppendingString:n1];
+        }
+    }
+    
+    NSString *sumString = @"";
+    NSInteger carryBit = 0;
+    for (NSInteger i = maxLength - 1; i >= 0; i--) {
+        NSRange range = NSMakeRange(i, 1);
+        NSInteger currentBitNumber1 = [n1 substringWithRange:range].integerValue;
+        NSInteger currentBitNumber2 = [n2 substringWithRange:range].integerValue;
+        
+        NSInteger currentBitSum = currentBitNumber1 + currentBitNumber2 + carryBit;
+        carryBit = currentBitSum > 9 ? 1 : 0;
+        currentBitSum%=10;
+        sumString = [[NSString stringWithFormat:@"%zd", currentBitSum] stringByAppendingString:sumString];
+    }
+    if (carryBit == 1) {
+        sumString = [@"1" stringByAppendingString:sumString];
+    }
+    return sumString;
+}
+```
