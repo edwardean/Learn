@@ -1,5 +1,5 @@
 
-![https://imgchr.com/i/GyukjA](https://imgchr.com/i/GyukjA)
+![](https://imgchr.com/i/GyukjA)
 
 
 **结论：**
